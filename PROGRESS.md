@@ -45,15 +45,27 @@ Legend: [ ] todo · [~] in progress · [x] done · [!] blocked/needs decision
 - [x] Stretch tool: `get_order_status`
 - [x] Stretch tool: `compare_products`
 - [x] Error handling in tool execute()/API routes (bad id, out of stock, empty cart, bad discount)
-- [ ] README.md (setup + WebMCP explanation) — still default create-next-app content, **todo**
-- [ ] LICENSE (MIT) — **todo**
+- [x] README.md (setup + WebMCP tool list + collaboration/grounding story)
+- [x] LICENSE (MIT, copyright LihanCanCode)
 - [ ] Devpost text description draft — **todo**
+- [x] Fixed 2 pre-existing lint errors (`lib/catalog.ts` empty-interface,
+      `lib/use-webmcp-supported.ts` setState-in-effect → `useSyncExternalStore`);
+      `npm run lint` and `npm run build` both clean
 
 ## Day 5 — Demo + Submission
 - [ ] Record <3 min narrated demo video
 - [ ] Finalize Devpost writeup (inspiration / what it does / how built / challenges / what's next)
 - [ ] Full run-through in ChatGPT in-app browser against deployed Vercel URL
-- [ ] `git init` + push to a public GitHub repo (license visible in About section — hard requirement)
+- [x] `git init` + local initial commit made (`CoShop: agent-native storefront for the
+      WebMCP Challenge`). Deliberately excluded `home.html`, `resources.txt` (contains a
+      personal Vercel promo code), `Rules.md`, `The WebMCP Challenge.md` — hackathon
+      reference material, not project source; added to `.gitignore`.
+- [x] Pushed to public repo https://github.com/LihanCanCode/Co-shop (main branch). Commit
+      author is LihanCanCode only (no co-author trailer) per user request. LICENSE is at
+      repo root so it will surface in the GitHub "About" section automatically.
+      Note: an accidental duplicate empty repo `LihanCanCode/coshop` (lowercase, no
+      hyphen) was created by an interrupted `gh repo create` call — gh's token lacks
+      `delete_repo` scope so I couldn't remove it; **user should delete it manually**.
 - [ ] Buffer / bug fixes
 - [ ] Submit on Devpost
 
@@ -91,7 +103,9 @@ framing than a visible negotiation would be. Retargeted without a rebuild:
 - [x] `npm run build` passes; order-confirm API flow re-verified via curl after the change
 
 ## Current Status
-**Now doing:** Retarget complete and build-verified. Still need a real browser pass to see
-the spotlight/confirm-bar animations in action (curl can't exercise client-side Zustand
-state), then: deploy to Vercel, real Chrome WebMCP-flag test, README/LICENSE/git init,
-Devpost writeup.
+**Now doing:** Retarget complete and build-verified; lint clean; README/LICENSE written;
+local git repo initialized with first commit. Still need: a real browser pass to see the
+spotlight/confirm-bar animations in action (curl/no browser tool in this session can't
+exercise client-side Zustand state or real WebMCP tool calls), a public GitHub repo +
+push (needs a repo name from the user before I create/push it), Vercel deploy, Devpost
+writeup, demo video.
