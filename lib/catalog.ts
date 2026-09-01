@@ -176,7 +176,14 @@ const SEED_PRODUCTS: SeedProduct[] = [
 ];
 
 export const PRODUCTS: Product[] = SEED_PRODUCTS.map((p) => {
-  const hasRealImage = ["trailblazer-runner", "urban-glide-sneaker", "cloudstep-walking-shoe"].includes(p.id);
+  const hasRealImage = [
+    "trailblazer-runner",
+    "urban-glide-sneaker",
+    "cloudstep-walking-shoe",
+    "peak-hiker-boot",
+    "classic-canvas-low-top",
+    "all-terrain-trail-boot"
+  ].includes(p.id);
   return {
     ...p,
     image: hasRealImage ? `/images/${p.id}.png` : productImage(p.id, p.name),
