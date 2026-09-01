@@ -25,6 +25,31 @@ where you want a deliberate, visible human decision. CoShop's confirm/decline
 mechanic is a small, concrete model of that — not a toy restriction, but the
 shape a production agentic-checkout flow would actually need.
 
+## The WebMCP Workflow
+
+```mermaid
+sequenceDiagram
+    participant User as Human Shopper
+    participant AI as AI Agent
+    participant App as CoShop React App
+    participant State as Zustand & API
+    
+    User->>AI: "Find a waterproof boot, add it, and checkout"
+    App->>AI: Registers WebMCP Tools (document.modelContext)
+    
+    AI->>App: Executes search_products("waterproof")
+    App->>State: Fetches Catalog Data
+    State-->>App: Returns JSON Results
+    
+    AI->>App: Executes add_to_cart(id, size, qty)
+    App->>State: Mutates Cart State
+    State-->>App: Triggers "Live Grounding" UI animations
+    
+    AI->>App: Executes checkout()
+    App->>User: Renders Human-in-the-Loop Confirmation Banner
+    User->>App: Physically Clicks "Confirm Order"
+```
+
 ## What's built
 
 - **16-item product catalog** across Shoes and Apparel, browsable and
@@ -55,22 +80,18 @@ shape a production agentic-checkout flow would actually need.
   sighted user gets from watching the UI move.
 - **Accessible by default** — semantic HTML, ARIA labels, skip-to-content,
   visible focus states, and live regions throughout, not bolted on after.
-- **Deterministic offline product art** — gradient SVGs generated from each
-  product's id, so the storefront has zero external image dependency (nothing
-  that can fail to load during a live demo).
+- **8K Photorealistic Product Assets** — Integrated directly into the `/public/images` 
+  directory to give the application a premium, production-ready aesthetic.
 - **Framer Motion throughout** — staggered catalog entrance, card hover/tap,
   animated cart add/remove, and a cart badge that pops on change.
 
-## Tech stack
+## Tech stack & Technical Depth
 
-- Next.js (App Router) + TypeScript + Tailwind CSS
-- [`use-webmcp-tool`](https://www.npmjs.com/package/use-webmcp-tool) for
-  `document.modelContext` tool registration
-- Zustand for shared cart/UI state (used by both the React UI and the WebMCP
-  tools' `execute()` calls — one store, one source of truth)
-- Framer Motion for animation
-- Cookie-backed cart/order storage (no database) — correct for a stateless
-  serverless deployment, and enough for a demo-scale catalog
+- **Next.js 16 (App Router)**: Server-side rendering and edge-compatible API routes.
+- **`use-webmcp-tool`**: Official React hook mapping schema definitions to `document.modelContext` for client-side tool discovery.
+- **Zustand State Management**: The core architectural bridge. By passing WebMCP `execute()` callbacks through the exact same Zustand store that powers the React UI, we ensure absolute consistency (one store, one source of truth).
+- **Tailwind CSS v4 & Framer Motion**: Powering the "Midnight Violet" glassmorphism aesthetic and fluid state transitions.
+- **Stateless Architecture**: Cookie-backed cart/order storage (no external database). This ensures massive scalability for demo environments without bottlenecking on database reads/writes, remaining entirely stateless and serverless on Vercel's Edge network.
 
 ## Running locally
 
@@ -85,12 +106,12 @@ and cart/order state lives in an httpOnly cookie per session.
 
 To exercise the WebMCP tools with a real agent rather than the UI:
 
-- **Chrome**: enable `chrome://flags/#enable-webmcp-testing`, then use an
-  agent-driven browsing surface that speaks WebMCP against the running app.
-- **ChatGPT's in-app browser** (or any other WebMCP-aware agent client):
-  navigate it to the deployed URL and ask it to shop — e.g. *"find me a
+- **ChatGPT's in-app browser** (Recommended):
+  Navigate the desktop app to the deployed URL and ask it to shop — e.g. *"find me a
   waterproof running shoe under $120, add it to my cart, and check out."*
   Watch it stage the order, then confirm it yourself in the UI.
+- **Chrome**: enable `chrome://flags/#enable-webmcp-testing`, then use an
+  agent-driven browsing surface that speaks WebMCP against the running app.
 
 ## Project structure
 
@@ -100,6 +121,7 @@ components/          UI components + WebMCPTools.tsx (all tool registrations)
 store/cart-store.ts  Shared Zustand store — cart, spotlight, pending checkout
 lib/                 Catalog data, formatting helpers, placeholder art, cookie cart
 app/api/             Cart, discount, checkout, and order-status routes
+public/images/       8K photorealistic product image assets
 ```
 
 ## License
