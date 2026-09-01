@@ -82,8 +82,8 @@ export const useCartStore = create<CartState>()((set, get) => ({
       const res = await fetch("/api/cart");
       const data = await parseJsonResponse<{ cart: Cart; subtotal: number; total: number }>(res);
       set({ cart: data.cart, subtotal: data.subtotal, total: data.total, hydrated: true });
-    } catch (error: any) {
-      if (error.name === "AbortError") return;
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return;
       throw error;
     }
   },

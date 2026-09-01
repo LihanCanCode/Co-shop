@@ -17,7 +17,6 @@ const selectStyle = {
 export default function AddToCartForm({ product }: { product: Product }) {
   const router = useRouter();
   const addItem = useCartStore((state) => state.addItem);
-  const logActivity = useCartStore((state) => state.logActivity);
 
   const [size, setSize] = useState(product.sizes[0]);
   const [color, setColor] = useState(product.colors[0]);
@@ -33,7 +32,6 @@ export default function AddToCartForm({ product }: { product: Product }) {
     setMessage(null);
     try {
       await addItem({ productId: product.id, size, color, qty });
-      logActivity(`Added ${qty} × ${product.name} to cart`);
       setStatus("done");
       setMessage(`Added to cart. Size ${size}, ${color}.`);
     } catch (error) {
