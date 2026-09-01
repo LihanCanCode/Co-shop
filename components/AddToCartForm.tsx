@@ -2,8 +2,17 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import type { Product } from "@/types";
 import { useCartStore } from "@/store/cart-store";
+
+const selectClass =
+  "w-full rounded-xl px-3 py-2.5 text-sm text-cs-text-primary transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cs-accent/60";
+
+const selectStyle = {
+  background: "rgba(8, 8, 15, 0.7)",
+  border: "1px solid var(--cs-border)",
+};
 
 export default function AddToCartForm({ product }: { product: Product }) {
   const router = useRouter();
@@ -13,7 +22,9 @@ export default function AddToCartForm({ product }: { product: Product }) {
   const [size, setSize] = useState(product.sizes[0]);
   const [color, setColor] = useState(product.colors[0]);
   const [qty, setQty] = useState(1);
-  const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">(
+    "idle"
+  );
   const [message, setMessage] = useState<string | null>(null);
 
   async function handleSubmit(e: FormEvent) {
@@ -27,21 +38,28 @@ export default function AddToCartForm({ product }: { product: Product }) {
       setMessage(`Added to cart. Size ${size}, ${color}.`);
     } catch (error) {
       setStatus("error");
-      setMessage(error instanceof Error ? error.message : "Unable to add to cart.");
+      setMessage(
+        error instanceof Error ? error.message : "Unable to add to cart."
+      );
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      {/* Size */}
       <div>
-        <label htmlFor="pdp-size" className="mb-1 block text-sm font-medium text-neutral-300">
+        <label
+          htmlFor="pdp-size"
+          className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-cs-text-muted"
+        >
           Size
         </label>
         <select
           id="pdp-size"
           value={size}
           onChange={(e) => setSize(e.target.value)}
-          className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
+          className={selectClass}
+          style={selectStyle}
         >
           {product.sizes.map((s) => (
             <option key={s} value={s}>
@@ -51,15 +69,20 @@ export default function AddToCartForm({ product }: { product: Product }) {
         </select>
       </div>
 
+      {/* Color */}
       <div>
-        <label htmlFor="pdp-color" className="mb-1 block text-sm font-medium text-neutral-300">
-          Color
+        <label
+          htmlFor="pdp-color"
+          className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-cs-text-muted"
+        >
+          Colour
         </label>
         <select
           id="pdp-color"
           value={color}
           onChange={(e) => setColor(e.target.value)}
-          className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
+          className={selectClass}
+          style={selectStyle}
         >
           {product.colors.map((c) => (
             <option key={c} value={c}>
@@ -69,8 +92,12 @@ export default function AddToCartForm({ product }: { product: Product }) {
         </select>
       </div>
 
+      {/* Quantity */}
       <div>
-        <label htmlFor="pdp-qty" className="mb-1 block text-sm font-medium text-neutral-300">
+        <label
+          htmlFor="pdp-qty"
+          className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-cs-text-muted"
+        >
           Quantity
         </label>
         <input
@@ -79,32 +106,89 @@ export default function AddToCartForm({ product }: { product: Product }) {
           min={1}
           max={product.stock}
           value={qty}
-          onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}
-          className="w-24 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
+          onChange={(e) =>
+            setQty(Math.max(1, Number(e.target.value) || 1))
+          }
+          className="w-28 rounded-xl px-3 py-2.5 text-sm text-cs-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cs-accent/60"
+          style={selectStyle}
         />
       </div>
 
-      <button
+      {/* CTA */}
+      <motion.button
+        whileTap={{ scale: 0.97 }}
         type="submit"
         disabled={status === "loading"}
-        className="rounded-lg bg-emerald-500 px-4 py-3 font-semibold text-neutral-950 hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
+        className="btn-gradient relative rounded-xl px-4 py-3.5 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cs-accent/60 focus-visible:ring-offset-2"
       >
-        {status === "loading" ? "Adding…" : "Add to cart"}
-      </button>
+        {status === "loading" ? (
+          <span className="flex items-center justify-center gap-2">
+            <svg
+              className="h-4 w-4 animate-spin"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
+            </svg>
+            Adding…
+          </span>
+        ) : (
+          "Add to cart"
+        )}
+      </motion.button>
 
-      <p role="status" aria-live="polite" className={status === "error" ? "text-sm text-red-400" : "text-sm text-emerald-400"}>
-        {message}
-      </p>
+      {/* Status message */}
+      <AnimatePresence>
+        {message && (
+          <motion.p
+            role="status"
+            aria-live="polite"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className={`text-sm font-medium ${
+              status === "error" ? "text-red-400" : "text-cs-agent-light"
+            }`}
+          >
+            {message}
+          </motion.p>
+        )}
+      </AnimatePresence>
 
-      {status === "done" ? (
-        <button
-          type="button"
-          onClick={() => router.push("/cart")}
-          className="text-sm font-medium text-emerald-300 underline underline-offset-4 hover:text-emerald-200"
-        >
-          View cart →
-        </button>
-      ) : null}
+      {/* View cart link */}
+      <AnimatePresence>
+        {status === "done" && (
+          <motion.button
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            type="button"
+            onClick={() => router.push("/cart")}
+            className="group flex items-center gap-1.5 text-sm font-semibold text-cs-accent-light hover:text-white transition-colors"
+          >
+            View cart
+            <motion.span
+              whileHover={{ x: 4 }}
+              transition={{ type: "spring", stiffness: 400 }}
+              className="inline-block"
+            >
+              →
+            </motion.span>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </form>
   );
 }

@@ -78,9 +78,14 @@ export const useCartStore = create<CartState>()((set, get) => ({
   },
 
   refresh: async () => {
-    const res = await fetch("/api/cart");
-    const data = await parseJsonResponse<{ cart: Cart; subtotal: number; total: number }>(res);
-    set({ cart: data.cart, subtotal: data.subtotal, total: data.total, hydrated: true });
+    try {
+      const res = await fetch("/api/cart");
+      const data = await parseJsonResponse<{ cart: Cart; subtotal: number; total: number }>(res);
+      set({ cart: data.cart, subtotal: data.subtotal, total: data.total, hydrated: true });
+    } catch (error: any) {
+      if (error.name === "AbortError") return;
+      throw error;
+    }
   },
 
   addItem: async (input) => {

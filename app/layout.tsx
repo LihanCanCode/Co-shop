@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Outfit, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import CartHydrator from "@/components/CartHydrator";
 import WebMCPTools from "@/components/WebMCPTools";
 import ToolActivityToast from "@/components/ToolActivityToast";
 import CheckoutConfirmBar from "@/components/CheckoutConfirmBar";
+import AnimatedBackground from "@/components/AnimatedBackground";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -27,19 +28,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${outfit.variable} ${inter.variable} h-full antialiased font-sans`}
     >
-      <body className="flex min-h-full flex-col bg-neutral-950 text-neutral-100">
+      <body className="flex min-h-full flex-col bg-cs-bg text-cs-text-primary relative">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-emerald-500 focus:px-4 focus:py-2 focus:font-semibold focus:text-neutral-950"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-cs-accent focus:px-4 focus:py-2 focus:font-semibold focus:text-white"
         >
           Skip to content
         </a>
+        <AnimatedBackground />
         <CartHydrator />
         <WebMCPTools />
         <Header />
-        <main id="main-content" className="flex-1">
+        <main id="main-content" className="flex-1 relative z-10">
           {children}
         </main>
         <CheckoutConfirmBar />

@@ -5,10 +5,7 @@ import { useCartStore } from "@/store/cart-store";
 
 /**
  * A visible, screen-reader-announced log of what the agent just did.
- * This is both the demo's "wow" moment (watch the store react live as the
- * agent works) and a genuine accessibility feature: a non-visual user gets
- * the same live confirmation a sighted user gets from watching the UI change.
- * The newest entry reads as a caption; older ones recede behind it.
+ * Cyan colour system = agent action. Glassmorphism surface.
  */
 export default function ToolActivityToast() {
   const activity = useCartStore((state) => state.activity);
@@ -26,21 +23,62 @@ export default function ToolActivityToast() {
           <motion.div
             key={entry.id}
             layout
-            initial={{ opacity: 0, y: 12, scale: 0.96 }}
-            animate={{ opacity: 1 - i * 0.2, y: 0, scale: i === 0 ? 1 : 0.97 }}
-            exit={{ opacity: 0, y: -8 }}
+            initial={{ opacity: 0, y: 16, scale: 0.94 }}
+            animate={{
+              opacity: 1 - i * 0.22,
+              y: 0,
+              scale: i === 0 ? 1 : 0.96,
+            }}
+            exit={{ opacity: 0, y: -8, scale: 0.94 }}
             transition={{ type: "spring", stiffness: 320, damping: 26 }}
-            className={`pointer-events-auto rounded-lg border bg-neutral-900/95 px-3 py-2 shadow-lg backdrop-blur ${
-              i === 0 ? "border-emerald-500/60" : "border-emerald-800/40"
-            }`}
+            className="pointer-events-auto overflow-hidden rounded-xl shadow-2xl"
+            style={{
+              background: "rgba(15, 15, 26, 0.92)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+              border: `1px solid ${
+                i === 0
+                  ? "rgb(6 182 212 / 0.45)"
+                  : "rgb(6 182 212 / 0.15)"
+              }`,
+              boxShadow:
+                i === 0
+                  ? "0 0 20px rgba(6,182,212,0.15)"
+                  : "none",
+            }}
           >
-            <p className="flex items-center gap-2 text-xs font-medium text-emerald-300">
-              <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              Agent action
-            </p>
-            <p className={`mt-0.5 text-neutral-100 ${i === 0 ? "text-sm font-medium" : "text-xs"}`}>
-              {entry.label}
-            </p>
+            {/* Cyan top accent line */}
+            {i === 0 && (
+              <div
+                className="h-px w-full"
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent, rgba(6,182,212,0.7), transparent)",
+                }}
+              />
+            )}
+
+            <div className="px-4 py-3">
+              <p
+                className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest"
+                style={{ color: "#22d3ee" }}
+              >
+                <span
+                  aria-hidden
+                  className={`inline-block h-1.5 w-1.5 rounded-full bg-cs-agent ${
+                    i === 0 ? "agent-dot" : ""
+                  }`}
+                />
+                Agent action
+              </p>
+              <p
+                className={`mt-1 text-cs-text-primary ${
+                  i === 0 ? "text-sm font-medium" : "text-xs"
+                }`}
+              >
+                {entry.label}
+              </p>
+            </div>
           </motion.div>
         ))}
       </AnimatePresence>
