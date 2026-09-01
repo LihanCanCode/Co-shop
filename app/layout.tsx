@@ -46,6 +46,24 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <CheckoutConfirmBar />
         <ToolActivityToast />
+        {/* Debug Badge for WebMCP testing */}
+        <div className="fixed bottom-2 left-2 z-[9999] rounded bg-black/80 px-2 py-1 text-[10px] font-mono text-white shadow ring-1 ring-white/20">
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                setInterval(() => {
+                  const el = document.getElementById('webmcp-status');
+                  if (el) {
+                    const active = typeof document !== 'undefined' && Boolean(document.modelContext);
+                    el.textContent = 'WebMCP: ' + (active ? '✅ ACTIVE' : '❌ MISSING (Wrong Browser Environment)');
+                    el.style.color = active ? '#4ade80' : '#f87171';
+                  }
+                }, 1000);
+              `,
+            }}
+          />
+          <span id="webmcp-status">Checking WebMCP...</span>
+        </div>
       </body>
     </html>
   );
