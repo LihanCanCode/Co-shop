@@ -25,18 +25,66 @@ export default function Header() {
           href="/"
           className="group flex items-center gap-2.5 text-lg font-bold tracking-tight text-cs-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cs-accent"
         >
-          <motion.span
-            whileHover={{ scale: 1.08, rotate: -3 }}
-            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          <motion.div
+            whileHover={{ scale: 1.05, rotate: 180 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
             aria-hidden
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-sm font-black text-white"
+            className="flex h-9 w-9 items-center justify-center rounded-xl relative overflow-hidden"
             style={{
-              background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)",
-              boxShadow: "0 0 16px rgba(124,58,237,0.5)",
+              background: "rgba(124, 58, 237, 0.15)",
+              border: "1px solid rgba(168, 85, 247, 0.4)",
+              boxShadow: "0 0 20px rgba(124,58,237,0.4), inset 0 0 10px rgba(168,85,247,0.2)",
+              backdropFilter: "blur(8px)",
             }}
           >
-            CS
-          </motion.span>
+            {/* Inner glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-purple-600/20 to-fuchsia-400/20 rounded-xl" />
+            
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="relative z-10"
+            >
+              <path
+                d="M12 2L2 7L12 12L22 7L12 2Z"
+                stroke="url(#grad1)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M2 17L12 22L22 17"
+                stroke="url(#grad2)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M2 12L12 17L22 12"
+                stroke="url(#grad3)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <defs>
+                <linearGradient id="grad1" x1="2" y1="2" x2="22" y2="12" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#c084fc" />
+                  <stop offset="1" stopColor="#f0abfc" />
+                </linearGradient>
+                <linearGradient id="grad2" x1="2" y1="17" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#7c3aed" />
+                  <stop offset="1" stopColor="#d8b4fe" />
+                </linearGradient>
+                <linearGradient id="grad3" x1="2" y1="12" x2="22" y2="17" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#9333ea" />
+                  <stop offset="1" stopColor="#e879f9" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </motion.div>
           <span className="gradient-text">CoShop</span>
         </Link>
 
