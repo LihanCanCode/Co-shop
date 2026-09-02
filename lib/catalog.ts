@@ -182,7 +182,17 @@ export const PRODUCTS: Product[] = SEED_PRODUCTS.map((p) => {
     "cloudstep-walking-shoe",
     "peak-hiker-boot",
     "classic-canvas-low-top",
-    "all-terrain-trail-boot"
+    "all-terrain-trail-boot",
+    "studio-flex-trainer",
+    "coastal-slip-on",
+    "everyday-crew-tee",
+    "performance-half-zip",
+    "lightweight-rain-shell",
+    "relaxed-fit-joggers",
+    "merino-wool-beanie",
+    "trail-windbreaker",
+    "classic-denim-jacket",
+    "thermal-base-layer"
   ].includes(p.id);
   return {
     ...p,
