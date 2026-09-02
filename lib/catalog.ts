@@ -176,6 +176,16 @@ const SEED_PRODUCTS: SeedProduct[] = [
 ];
 
 export const PRODUCTS: Product[] = SEED_PRODUCTS.map((p) => {
+  const isJpg = [
+    "classic-denim-jacket",
+    "lightweight-rain-shell",
+    "merino-wool-beanie",
+    "performance-half-zip",
+    "relaxed-fit-joggers",
+    "thermal-base-layer",
+    "trail-windbreaker"
+  ].includes(p.id);
+
   const hasRealImage = [
     "trailblazer-runner",
     "urban-glide-sneaker",
@@ -186,17 +196,22 @@ export const PRODUCTS: Product[] = SEED_PRODUCTS.map((p) => {
     "studio-flex-trainer",
     "coastal-slip-on",
     "everyday-crew-tee",
-    "performance-half-zip",
-    "lightweight-rain-shell",
-    "relaxed-fit-joggers",
-    "merino-wool-beanie",
-    "trail-windbreaker",
-    "classic-denim-jacket",
-    "thermal-base-layer"
+    ...[
+      "classic-denim-jacket",
+      "lightweight-rain-shell",
+      "merino-wool-beanie",
+      "performance-half-zip",
+      "relaxed-fit-joggers",
+      "thermal-base-layer",
+      "trail-windbreaker"
+    ]
   ].includes(p.id);
+
+  const extension = isJpg ? ".jpg" : ".png";
+
   return {
     ...p,
-    image: hasRealImage ? `/images/${p.id}.png` : productImage(p.id, p.name),
+    image: hasRealImage ? `/images/${p.id}${extension}` : productImage(p.id, p.name),
   };
 });
 
