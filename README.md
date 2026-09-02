@@ -1,5 +1,6 @@
 # CoShop
 
+![CoShop Storefront](./public/images/store.png)
 A storefront built for the **OpenAI WebMCP Challenge** — where a shopper and their
 AI agent browse, compare, and check out in the *same session*, watching each
 other work.
@@ -49,6 +50,18 @@ sequenceDiagram
     App->>User: Renders Human-in-the-Loop Confirmation Banner
     User->>App: Physically Clicks "Confirm Order"
 ```
+
+## Example Walkthrough: The Shared Session
+
+Imagine you are shopping for a hiking trip. You manually browse the catalog, find the *Urban Glide Sneakers*, and add them to your cart. Then, you realize you also need a waterproof jacket. Instead of scrolling and searching for it yourself, you open your WebMCP-enabled AI agent and type:
+
+> *"I just added sneakers to my cart. Can you find me a waterproof jacket under $150, add a size Medium to the cart with my sneakers, and stage a checkout?"*
+
+Here is exactly what happens behind the scenes:
+1. **Tool Discovery:** The agent reads the page's `document.modelContext` and instantly identifies the `search_products`, `add_to_cart`, and `checkout` tools.
+2. **Search Execution:** The agent autonomously executes `search_products("waterproof jacket")`. The CoShop API processes this and returns the structured catalog data to the agent.
+3. **Live UI Grounding:** The agent executes `add_to_cart(jacketId, "M", 1)`. Because this WebMCP tool modifies the exact same **Zustand** state store as the human-facing UI, your cart sidebar instantly slides open on your screen, and you watch the jacket appear right next to the sneakers you added manually.
+4. **Human Validation:** The agent executes `checkout()`. The AI is explicitly prevented from spending your money autonomously. Instead, it pauses, and a global "Confirm Order" banner appears on your screen. You review the combined order, click "Confirm," and safely complete the transaction.
 
 ## What's built
 
